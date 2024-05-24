@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AngularDotnet.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38a0f264a1f4d12de2acd58efe7592ef0c4e49cd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f43eef9886f52f13711c96e86a328c2179634d45")]
 [assembly: System.Reflection.AssemblyProductAttribute("AngularDotnet.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AngularDotnet.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

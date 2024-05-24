@@ -1,8 +1,10 @@
 ﻿using AngularDotnet.Core;
 using AngularDotnet.Core.DTOs;
 using AngularDotnet.Core.Entities;
+using AngularDotnet.Core.Hub;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace AngularDotnet.Server.Controllers
@@ -13,10 +15,13 @@ namespace AngularDotnet.Server.Controllers
     {
         private MovieCatalogDbContext _dbContext;
         private IMapper _mapper;
-        public MoviesController(MovieCatalogDbContext dbContext, IMapper mapper)
+        private IHubContext<MessageHub, IMessageHubClient> _messageHub;
+
+        public MoviesController(MovieCatalogDbContext dbContext, IMapper mapper, IHubContext<MessageHub, IMessageHubClient> messageHub)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _messageHub = messageHub;
         }
         [HttpGet]
         [ProducesResponseType(typeof(List<MovieDTO>), StatusCodes.Status200OK)]
@@ -80,7 +85,17 @@ namespace AngularDotnet.Server.Controllers
                 Year = movie.Year,
             });
             var result = await _dbContext.SaveChangesAsync();
-            return result > 0 ? Ok(movie) : BadRequest("errror");
+            if (result > 0)
+            {
+
+                await _messageHub.Clients.All.NotifyAboutNewMovie(new MovieDTO()
+                {
+                    IMDBId = movie.IMDBId,
+                    MovieName = movie.MovieName,
+                });
+                return Ok(movie);
+            }
+            return BadRequest("errror");
         }
 
         [HttpPut]
@@ -131,6 +146,17 @@ namespace AngularDotnet.Server.Controllers
                 throw;
             }
 
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [Route("AddRealTime")]
+        public async Task<ActionResult> CreateMovie([FromBody] Movies movie)
+        {
+
+            var dto = _mapper.Map<MovieDTO>(movie);
+            await _messageHub.Clients.All.NotifyAboutNewMovie(dto);
+            return Ok("Movie Added");
         }
     }
 

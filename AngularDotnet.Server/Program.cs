@@ -1,4 +1,4 @@
-using AngularDotnet.Core;
+using AngularDotnet.Core.Hub;
 using AngularDotnet.Server;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,10 +24,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsBinders(configuration);
 builder.Services.AddDatabase(configuration);
 builder.Services.AddServices(configuration);
-
-
-//builder.Services.AddAuth(configuration);
 builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CORSPolicy", builder => builder
+
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .SetIsOriginAllowed((hosts) => true)
+    );
+});
+//builder.Services.AddAuth(configuration);
 builder.Services.AddAutoMapper(configuration);
 
 
@@ -44,8 +53,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
-app.MapHub<ImportNotificationHub>("/Notify");
+app.UseCors("CORSPolicy");
+app.MapHub<MessageHub>("/Notify");
 
 app.UseAuthentication();
 app.UseAuthorization();

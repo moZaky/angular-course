@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { IMovie } from 'src/app/models/movie';
 import { Route, Router } from '@angular/router';
 import { AddMovieComponent } from '../add-movie/add-movie.component';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-movie-list',
@@ -19,18 +19,24 @@ export class MovieListComponent implements OnInit {
     this._movieService.movieAddedOrUpdated$.subscribe((displayForm) => {
       this.showForm = displayForm;
     });
-    this. getAllMovies();
-  }
-  getAllMovies(){
-    this.movies$ = this._movieService.getMovies();
-    
+    this.getAllMovies();
+    this._movieService.startConnection();
+    this._movieService.addNotifyAboutNewMovieListener();
+    this._movieService.realTimeMovie.subscribe(movie=>{
+      if(movie?.id){
+        Swal.fire(`new movie is added ${movie.movieName} `);
 
+      }
+    })
+  }
+  getAllMovies() {
+    this.movies$ = this._movieService.getMovies();
   }
   editMovie(movie: IMovie) {
     this._movieService.setSelectedMovie(movie);
     this._router.navigate(['/add-form']);
   }
-  confirmDeleteMovie(id:string){
+  confirmDeleteMovie(id: string) {
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -45,17 +51,17 @@ export class MovieListComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        this.deleteMovie(id)
+        this.deleteMovie(id);
       } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
+        Swal.fire('Changes are not saved', '', 'info');
       }
-    })
+    });
   }
   deleteMovie(id: string) {
     this._movieService.deleteMovie(id).subscribe((res) => {
       if (res) {
         Swal.fire('Deleted!', '', 'success');
-        this.getAllMovies()
+         this.getAllMovies()
       }
     });
   }

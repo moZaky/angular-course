@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using AngularDotnet.Core;
+using AngularDotnet.Core.Hub;
 using AngularDotnet.Server.Automapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -71,7 +72,7 @@ namespace AngularDotnet.Server
         {
             //services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             //services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
-            services.AddScoped(typeof(INotificationHub), typeof(ImportNotificationHub));
+            services.AddScoped(typeof(IMessageHubClient));
 
 
         }
