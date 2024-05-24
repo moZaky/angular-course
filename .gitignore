@@ -4,3 +4,9 @@ obj
 node_modules
 Debug
 obj/Debug
+/.vs
+/angulardotnet.client/obj
+/AngularDotnet.Core/bin
+/AngularDotnet.Core/obj
+/AngularDotnet.Server/bin
+/AngularDotnet.Server/obj
