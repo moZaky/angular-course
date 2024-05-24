@@ -7,5 +7,7 @@
         public string IMDBId { get; set; }
         public string Poster { get; set; }
         public string Year { get; set; }
+        public bool IsActive { get; set; } = true;
+        public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;
     }
 }

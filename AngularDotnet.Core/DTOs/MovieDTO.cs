@@ -6,6 +6,7 @@
         public string IMDBId { get; set; }
         public string Poster { get; set; }
         public string Year { get; set; }
+        public Guid Id { get; set; }
 
     }
 }

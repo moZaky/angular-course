@@ -1,3 +1,4 @@
+using AngularDotnet.Core;
 using AngularDotnet.Server;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,8 +26,9 @@ builder.Services.AddDatabase(configuration);
 builder.Services.AddServices(configuration);
 
 
-builder.Services.AddAuth(configuration);
-
+//builder.Services.AddAuth(configuration);
+builder.Services.AddSignalR();
+builder.Services.AddAutoMapper(configuration);
 
 
 
@@ -43,6 +45,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.MapHub<ImportNotificationHub>("/Notify");
 
 app.UseAuthentication();
 app.UseAuthorization();

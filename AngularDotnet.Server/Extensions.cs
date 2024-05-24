@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using AngularDotnet.Core;
+using AngularDotnet.Server.Automapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +15,12 @@ namespace AngularDotnet.Server
 
 
         }
+        public static void AddAutoMapper(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAutoMapper(typeof(Mappings));
+
+        }
+
         public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             string connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -64,6 +71,9 @@ namespace AngularDotnet.Server
         {
             //services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             //services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped(typeof(INotificationHub), typeof(ImportNotificationHub));
+
+
         }
     }
 }

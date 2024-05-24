@@ -4,8 +4,7 @@
   routerLinkActive="active"
   ariaCurrentWhenActive="page"
 > add movie</a>
-
- <div *ngFor="let movie of movies$ | async">
+  <div *ngFor="let movie of movies$ | async">
   <div class="max-w-sm w-full lg:max-w-full lg:flex bg-blue-300">
     <div
       class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
@@ -27,15 +26,20 @@
         </div>
       </div>
       <div class="flex items-center">
-        <img
+        <!-- <img
           class="w-10 h-10 rounded-full mr-4"
           [src]="movie.poster"
           [alt]="movie.movieName"
-        />
+        /> -->
         <div class="text-sm">
           <p class="text-gray-600">{{ movie.year }}</p>
+        </div>
+        <div>
+          <button class="p-2 bg-slate-500" (click)="editMovie(movie)">edit</button>
+          <button class="p-2 bg-red-500" (click)="confirmDeleteMovie(movie.id)">delete</button>
         </div>
       </div>
     </div>
   </div>
+
 </div>
